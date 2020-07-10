@@ -3,40 +3,50 @@ using DocumentManagementSystem.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace DocumentManagementSystem.Data
 {
     public class Repository : IRepository
     {
-        public void AddDoc(Document doc)
+        private readonly DocumentContext _context;
+        public Repository(DocumentContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
-
-        public void DeleteDoc(Document doc)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Document GetDoc(string Id)
-        {
-            throw new NotImplementedException();
-        }
-
         public ICollection<Document> GetDocs()
         {
-            throw new NotImplementedException();
+            return _context.Documents.ToList();
+        }
+        public Document GetDoc(string Id)
+        {
+            return _context.Documents.FirstOrDefault(d => d.DocId == Id);
         }
 
-        public void Save()
+        public void AddDoc(Document doc)
         {
-            throw new NotImplementedException();
+            if (doc == null)
+            {
+                throw new ArgumentNullException(nameof(doc));
+            }
+            _context.Documents.Add(doc);
         }
 
         public void UpdateDoc(Document doc)
         {
-            throw new NotImplementedException();
+            //Do nothing
+        }
+
+        public void DeleteDoc(Document doc)
+        {
+            if (doc == null)
+                throw new ArgumentNullException(nameof(doc));
+
+            _context.Documents.Remove(doc);
+        }
+
+        public void Save()
+        {
+            _context.SaveChanges();
         }
     }
 }

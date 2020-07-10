@@ -9,7 +9,7 @@ namespace DocumentManagementSystem.Data
 {
     public class DocumentContext : DbContext
     {
-        public DocumentContext() : base()
+        public DocumentContext(DbContextOptions<DocumentContext> options) : base(options)
         {
 
         }
